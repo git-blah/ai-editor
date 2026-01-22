@@ -1,7 +1,5 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { useState } from "react";
