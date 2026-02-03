@@ -16,7 +16,10 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     <ClerkProvider appearance={{ theme: dark }}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Authenticated>{children}</Authenticated>
+          <Authenticated>
+            <UserButton />
+            {children}
+          </Authenticated>
           <Unauthenticated>
             <UnauthenticatedView />
           </Unauthenticated>
