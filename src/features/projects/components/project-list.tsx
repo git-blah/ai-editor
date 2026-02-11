@@ -4,6 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 
 import { Spinner } from "@/components/ui/spinner";
 import { Kbd } from "@/components/ui/kbd";
+import { Button } from "@/components/ui/button";
 
 import { useProjectsPartial } from "../hooks/use-projects";
 import { Doc } from "../../../../convex/_generated/dataModel";
@@ -33,6 +34,28 @@ interface ProjectListProps {
   onViewAll: () => void;
 }
 
+const ContinueCard = ({ data }: { data: Doc<"projects"> }) => {
+  return (
+    <div className=" flex flex-col gap-2">
+      <span className="text-xs text-muted-foreground">Last Updated</span>
+      <Button
+        variant="outline"
+        asChild
+        className="h-auto items-start justify-start p-3 bg-background border rounded-none flex flex-col gap-2"
+      >
+        <Link href={`/project/${data._id}`} className="flex items-center justify-between w-full">
+          <div className="flex itesm-center gap-2">
+            {getProjectIcon(data)}
+            <span className="font-medium truncate">{data.name}</span>
+            <ArrowRightIcon className="size-4 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+          </div>
+          <span className="text-xs text-muted-foreground">{formatTimestamp(data.updatedAt)}</span>
+        </Link>
+      </Button>
+    </div>
+  );
+};
+
 const ProjectItem = ({ data }: { data: Doc<"projects"> }) => {
   return (
     <Link
@@ -58,19 +81,26 @@ export const ProjectList = ({ onViewAll }: ProjectListProps) => {
     return <Spinner className="size-4 text-ring" />;
   }
 
+  const [...rest] = projects.slice(0, -1);
+  const [mostRecent] = projects.slice(-1);
+
   return (
     <div className="flex flex-col gap-4">
-      {projects.length > 0 && (
+      {mostRecent && <ContinueCard data={mostRecent} />}
+      {rest.length > 0 && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs text-muted-foreground">Recent projects</span>
-            <button className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <button
+              className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              onClick={onViewAll}
+            >
               <span>View all</span>
               <Kbd className="bg-accent border">ሣK</Kbd>
             </button>
           </div>
           <ul>
-            {projects.map((project) => (
+            {rest.map((project) => (
               <ProjectItem key={project._id} data={project} />
             ))}
           </ul>
