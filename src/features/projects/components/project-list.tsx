@@ -81,8 +81,7 @@ export const ProjectList = ({ onViewAll }: ProjectListProps) => {
     return <Spinner className="size-4 text-ring" />;
   }
 
-  const [...rest] = projects.slice(0, -1);
-  const [mostRecent] = projects.slice(-1);
+  const [mostRecent, ...rest] = projects;
 
   return (
     <div className="flex flex-col gap-4">

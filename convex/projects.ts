@@ -29,6 +29,7 @@ export const getPartial = query({
     return await ctx.db
       .query("projects")
       .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject))
+      .order("desc")
       .take(args.limit);
   },
 });
