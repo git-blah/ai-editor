@@ -43,8 +43,8 @@ const ContinueCard = ({ data }: { data: Doc<"projects"> }) => {
         asChild
         className="h-auto items-start justify-start p-3 bg-background border rounded-none flex flex-col gap-2"
       >
-        <Link href={`/project/${data._id}`} className="flex items-center justify-between w-full">
-          <div className="flex itesm-center gap-2">
+        <Link href={`/projects/${data._id}`} className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2">
             {getProjectIcon(data)}
             <span className="font-medium truncate">{data.name}</span>
             <ArrowRightIcon className="size-4 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
@@ -77,7 +77,7 @@ const ProjectItem = ({ data }: { data: Doc<"projects"> }) => {
 export const ProjectList = ({ onViewAll }: ProjectListProps) => {
   const projects = useProjectsPartial(6);
 
-  if (projects == undefined) {
+  if (projects === undefined) {
     return <Spinner className="size-4 text-ring" />;
   }
 
@@ -95,7 +95,7 @@ export const ProjectList = ({ onViewAll }: ProjectListProps) => {
               onClick={onViewAll}
             >
               <span>View all</span>
-              <Kbd className="bg-accent border">ሣK</Kbd>
+              <Kbd className="bg-accent border">⌃K</Kbd>
             </button>
           </div>
           <ul>
