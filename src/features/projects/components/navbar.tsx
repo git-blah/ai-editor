@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
+import { useState } from "react";
+import { CloudCheckIcon, LoaderIcon } from "lucide-react";
 
 import {
   Breadcrumb,
@@ -11,12 +15,15 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserButton } from "@clerk/nextjs";
 
 import { Id } from "../../../../convex/_generated/dataModel";
-import { useProject } from "../hooks/use-projects";
+import { useProject, useRenameProject } from "../hooks/use-projects";
+import { formatDistanceToNow } from "date-fns";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -25,6 +32,34 @@ const font = Poppins({
 
 export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
   const project = useProject(projectId);
+  const renameProject = useRenameProject();
+
+  const [name, setName] = useState("");
+  const [isRenaming, setIsRenaming] = useState(false);
+
+  const handleStartRename = () => {
+    if (!project) return;
+    setName(project.name);
+    setIsRenaming(true);
+  };
+
+  const handleSubmit = () => {
+    if (!project) return;
+    setIsRenaming(false);
+
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName === project.name) return;
+
+    renameProject({ id: projectId, name: trimmedName });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") handleSubmit();
+    else if (e.key === "Escape") {
+      setIsRenaming(false);
+    }
+  };
+
   return (
     <nav className="flex justify-between items-center gap-x-2 p-2 bg-sidebar border-b">
       <div className="flex items-center gap-x-2">
@@ -42,12 +77,49 @@ export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator className="ml-0! mr-1" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-sm cursor-pointer hover:text-primary font-medium max-w-40 truncate">
-                {project?.name ?? "Loading..."}
-              </BreadcrumbPage>
+              {isRenaming ? (
+                <input
+                  autoFocus
+                  type="text"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  onBlur={handleSubmit}
+                  onKeyDown={handleKeyDown}
+                  className="text-sm bg-transparent text-foreground outline-none focus:ring-1 focus:ring-inset focus:ring-ring font-medium max-w-40 truncate"
+                />
+              ) : (
+                <BreadcrumbPage
+                  onClick={handleStartRename}
+                  className="text-sm cursor-pointer hover:text-primary font-medium max-w-40 truncate"
+                >
+                  {project === undefined ? "Loading..." : (project?.name ?? "Unknown project")}
+                </BreadcrumbPage>
+              )}
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        {project?.importStatus === "importing" ? (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <LoaderIcon className="size-4 text-muted-foreground animate-spin" />
+            </TooltipTrigger>
+            <TooltipContent>Importing...</TooltipContent>
+          </Tooltip>
+        ) : (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <CloudCheckIcon className="size-4 text-muted-foreground" />
+            </TooltipTrigger>
+            <TooltipContent>
+              Saved{" "}
+              {project?.updatedAt
+                ? formatDistanceToNow(project.updatedAt, { addSuffix: true })
+                : "unknown"}
+            </TooltipContent>
+          </Tooltip>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <UserButton />
