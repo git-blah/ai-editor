@@ -352,7 +352,7 @@ export const getFilePath = query({
     let currentId: Id<"files"> | undefined = args.id;
 
     while (currentId) {
-      const file = (await ctx.db.get("files", currentId)) as Doc<"files"> | undefined;
+      const file : Doc<"files"> | null = await ctx.db.get("files", currentId)
 
       if (!file) break;
 

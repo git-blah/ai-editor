@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef , useEffect} from "react";
 import { useFile, useUpdateFile } from "@/features/projects/hooks/use-files";
 
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -18,6 +18,14 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
 
   const isActiveFileBinary = activeFile && activeFile.storageId
   const isActiveFileText = activeFile && !activeFile.storageId
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [activeTabId]);
 
   return (
     <>
