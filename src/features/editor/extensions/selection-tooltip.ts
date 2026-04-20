@@ -38,7 +38,7 @@ const createTooltipForSelection = (state: EditorState): readonly Tooltip[] => {
         quickEditButton.textContent = "Quick Edit";
 
         const quickEditButtonShortcut = document.createElement("span");
-        quickEditButtonShortcut.textContent = "⑄K";
+        quickEditButtonShortcut.textContent = "ctrl+K";
         quickEditButtonShortcut.className = "text-sm opacity-60";
 
         //once check what is faster for dom manipulation, editing text or appending text childs.

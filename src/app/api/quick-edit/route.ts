@@ -40,14 +40,14 @@ If the instruction is unclear or cannot be applied, return the original code unc
 export async function POST(request: Request) {
   try {
     const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
+    }
+
     const { selectedCode, fullCode, instruction } = await request.json();
 
     if (!selectedCode) {
       return NextResponse.json({ error: "Selected Code is required" }, { status: 400 });
-    }
-
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
     }
 
     if (!instruction) {

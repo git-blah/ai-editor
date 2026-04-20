@@ -59,7 +59,7 @@ const createQuickEditTooltip = (state: EditorState): readonly Tooltip[] => {
         form.className = "flex flex-col gap-2";
 
         const input = document.createElement("input");
-        input.type = " text";
+        input.type = "text";
         input.placeholder = "Edit selected code";
         input.className = "bg-transparent border-none outline-none px-2 py-1 font-sans w-100";
         input.autofocus = true;
@@ -71,7 +71,7 @@ const createQuickEditTooltip = (state: EditorState): readonly Tooltip[] => {
         cancelButton.type = "button";
         cancelButton.textContent = "Cancel";
         cancelButton.className =
-          "font-sans p-1 px-2 text-muted-foreground hover:text-foreground hover:bg-forehead/10 rounded-sm";
+          "font-sans p-1 px-2 text-muted-foreground hover:text-foreground hover:bg-foreground/10 rounded-sm";
         cancelButton.onclick = () => {
           if (currentAbortController) {
             currentAbortController.abort();
