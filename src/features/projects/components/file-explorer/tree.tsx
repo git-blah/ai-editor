@@ -66,7 +66,7 @@ export const Tree = ({
   };
 
   const handleRename = (newName: string) => {
-    setIsRenaming(true);
+    setIsRenaming(false);
     if (newName === item.name) {
       return;
     }

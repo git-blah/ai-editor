@@ -55,7 +55,7 @@ const Tab = ({
           }
         }}
         className={cn(
-          "p-0.5 rounded0-sm hover:bg-white/10 opacity-0 group-hover:opacity-100",
+          "p-0.5 rounded-sm hover:bg-white/10 opacity-0 group-hover:opacity-100",
           isActive && "opacity-100",
         )}
       >
@@ -70,7 +70,7 @@ export const TopNavigation = ({ projectId }: { projectId: Id<"projects"> }) => {
 
   return (
     <ScrollArea className="flex-1">
-      <nav className="bg-sidebar flex itesm-center h-8.75 border-b">
+      <nav className="bg-sidebar flex items-center h-8.75 border-b">
         {openTabs.map((fileId, index) => (
           <Tab key={fileId} fileId={fileId} isFirst={index === 0} projectId={projectId} />
         ))}

@@ -9,6 +9,9 @@ import { customTheme } from "../extensions/theme";
 import { getLanguageExtension } from "../extensions/language-extension";
 import { minimap } from "../extensions/minimap";
 import { customSetup } from "../extensions/custom-setup";
+import { suggestion } from "../extensions/suggestion";
+import { quickEdit } from "../extensions/quick-edit";
+import { selectionTooltip } from "../extensions/selection-tooltip";
 
 interface Props {
   fileName: string;
@@ -31,16 +34,19 @@ export const CodeEditor = ({ fileName, initialValue = "", onChange }: Props) => 
       extensions: [
         customSetup,
         languageExtension,
+        suggestion(fileName),
+        quickEdit(fileName),
+        selectionTooltip(),
         oneDark,
         customTheme,
         keymap.of([indentWithTab]),
         minimap(),
         indentationMarkers(),
-        EditorView.updateListener.of((update)=>{
-          if(update.docChanged){
-            onChange(update.state.doc.toString())
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            onChange(update.state.doc.toString());
           }
-        })
+        }),
       ],
     });
 
@@ -48,7 +54,7 @@ export const CodeEditor = ({ fileName, initialValue = "", onChange }: Props) => 
     return () => {
       view.destroy();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [languageExtension]);
   return <div ref={editorRef} className="size-full pl-4 bg-background" />;
 };
