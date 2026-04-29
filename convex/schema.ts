@@ -43,6 +43,6 @@ export default defineSchema({
       v.union(v.literal("processing"), v.literal("completed"), v.literal("cancelled")),
     ),
   })
-    .index("by_converstaion", ["conversationId"])
+    .index("by_conversation", ["conversationId"])
     .index("by_project_status", ["projectId", "status"]),
 });

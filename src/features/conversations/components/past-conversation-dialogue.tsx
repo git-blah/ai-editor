@@ -39,7 +39,7 @@ export const PastConversationDialog = ({
       title="Past Conversation"
       description="Search and select a past conversation"
     >
-      <CommandInput placeholder="Seach conversations..." />
+      <CommandInput placeholder="Search conversations..." />
       <CommandList>
         <CommandEmpty>No conversation found.</CommandEmpty>
         <CommandGroup heading="Conversations">

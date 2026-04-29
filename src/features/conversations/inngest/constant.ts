@@ -30,4 +30,4 @@ Do NOT include intermediate thinking or narration. Only provide the final summar
 </response_format>`;
 
 export const TITLE_GENERATOR_SYSTEM_PROMPT =
-  "Describe user message succintly in 3 to 6 words, to be used as conversation title. Return ONLY the title and nothing else. No quotes, no punctuation at the end.";
+  "Describe user message succinctly in 3 to 6 words, to be used as conversation title. Return ONLY the title and nothing else. No quotes, no punctuation at the end.";

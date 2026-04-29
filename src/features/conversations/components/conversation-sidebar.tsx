@@ -126,9 +126,8 @@ export const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => 
         onSelect={setSelectedConversationId}
       />
       <div className="flex flex-col h-full bg-sidebar">
-        {" "}
         <div className="h-8.75 flex items-center justify-between border-b">
-          <div className="text-sm trucate pl-3">
+          <div className="text-sm truncate pl-3">
             {activeConversation?.title ?? DEFAULT_CONVERSATION_TITLE}
           </div>
           <div className="flex items-center px-1 gap-1">

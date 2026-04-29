@@ -41,7 +41,7 @@ export const createUpdateFilesTool = ({ internalKey }: UpdateFilesToolOptions) =
         return `Error : File with ID "${fileId}" not found. Use listFiles to get valid file IDs.`;
       }
       if (file.type === "folder") {
-        return `Error : "${fileId} is a folder, not a file. You can only update file contents.`;
+        return `Error : "${fileId}" is a folder, not a file. You can only update file contents.`;
       }
 
       try {

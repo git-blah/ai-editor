@@ -112,7 +112,7 @@ export const getRecentMessages = query({
 
     const messages = await ctx.db
       .query("messages")
-      .withIndex("by_converstaion", (q) => q.eq("conversationId", args.conversationId))
+      .withIndex("by_conversation", (q) => q.eq("conversationId", args.conversationId))
       .order("asc")
       .collect();
 
@@ -329,7 +329,7 @@ export const renameFile = mutation({
 
     const file = await ctx.db.get(args.fileId);
     if (!file) {
-      throw new Error("File doesnot exist");
+      throw new Error("File does not exist");
     }
 
     const sibling = await ctx.db
@@ -371,7 +371,7 @@ export const deleteFile = mutation({
     }
 
     // Recursively delete file/folder and all descendants
-    const deleteRecusive = async (fileId: typeof args.fileId) => {
+    const deleteRecursive = async (fileId: typeof args.fileId) => {
       const item = await ctx.db.get(fileId);
 
       if (!item) {
@@ -387,7 +387,7 @@ export const deleteFile = mutation({
           .collect();
 
         for (const child of children) {
-          await deleteRecusive(child._id);
+          await deleteRecursive(child._id);
         }
       }
 
@@ -399,7 +399,7 @@ export const deleteFile = mutation({
       await ctx.db.delete(fileId);
     };
 
-    await deleteRecusive(args.fileId);
+    await deleteRecursive(args.fileId);
 
     return args.fileId;
   },

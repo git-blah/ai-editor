@@ -102,9 +102,9 @@ export const processMessage = inngest.createFunction(
       systemPrompt += `\n\n## Previous Conversation(for context only - do NOT repeat these responses):\n${historyText}\n\n## Current Request:\nRespond ONLY to the user's new message below. Do not repeat or reference your previous responses.`;
     }
 
-    const shouldGenerateTitile = conversation.title === DEFAULT_CONVERSATION_TITLE;
+    const shouldGenerateTitle = conversation.title === DEFAULT_CONVERSATION_TITLE;
 
-    if (shouldGenerateTitile) {
+    if (shouldGenerateTitle) {
       const titleAgent = createAgent({
         name: "title-generator",
         system: TITLE_GENERATOR_SYSTEM_PROMPT,
@@ -170,9 +170,9 @@ export const processMessage = inngest.createFunction(
         const hasTextResponse = lastResult?.output.some(
           (m) => m.type === "text" && m.role === "assistant",
         );
-        const hasTooCalls = lastResult?.output.some((m) => m.type === "tool_call");
+        const hasToolCalls = lastResult?.output.some((m) => m.type === "tool_call");
 
-        if (hasTextResponse && !hasTooCalls) {
+        if (hasTextResponse && !hasToolCalls) {
           return undefined;
         }
 

@@ -1,4 +1,4 @@
-import z, { success } from "zod";
+import z from "zod";
 import { NextResponse } from "next/server";
 
 import { inngest } from "@/inngest/client";
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   const internalKey = process.env.CONVEX_INTERNAL_KEY;
 
   if (!internalKey) {
-    return NextResponse.json({ error: "Internal key not configures" }, { status: 500 });
+    return NextResponse.json({ error: "Internal key not configured" }, { status: 500 });
   }
 
   const processingMessages = await convex.query(api.system.getProcessingMessages, {
