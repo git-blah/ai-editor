@@ -13,6 +13,12 @@ export default defineSchema({
       v.union(v.literal("importing"), v.literal("completed"), v.literal("failed")),
     ),
     exportRepoUrl: v.optional(v.string()),
+    settings: v.optional(
+      v.object({
+        installCommand: v.optional(v.string()),
+        devCommand: v.optional(v.string()),
+      }),
+    ),
   }).index("by_owner", ["ownerId"]),
 
   files: defineTable({

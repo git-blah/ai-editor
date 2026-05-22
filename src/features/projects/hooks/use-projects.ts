@@ -66,3 +66,8 @@ export const useRenameProject = () => {
     }
   });
 };
+
+export const useUpdateProjectSettings = ()=>{
+  //TODO: optimistic mutation
+  return useMutation(api.projects.updateSettings)
+}
