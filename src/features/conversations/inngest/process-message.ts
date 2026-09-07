@@ -36,7 +36,7 @@ export const processMessage = inngest.createFunction(
     ],
     onFailure: async ({ event, step }) => {
       const { messageId } = event.data.event.data as MessageEvent;
-      const internalKey = process.env.CONVEX_INTERNAL_KEY;
+      const internalKey = process.env.POLARIS_CONVEX_INTERNAL_KEY;
 
       if (internalKey) {
         await step.run("update-message-on-failure", async () => {
@@ -56,10 +56,10 @@ export const processMessage = inngest.createFunction(
   async ({ event, step }) => {
     const { messageId, conversationId, projectId, message } = event.data as MessageEvent;
 
-    const internalKey = process.env.CONVEX_INTERNAL_KEY;
+    const internalKey = process.env.POLARIS_CONVEX_INTERNAL_KEY;
 
     if (!internalKey) {
-      throw new NonRetriableError("CONVEX_INTERNAL_KEY is not configured");
+      throw new NonRetriableError("POLARIS_CONVEX_INTERNAL_KEY is not configured");
     }
 
     // TODO: check if this is needed (data sync. inngest agent running faster than convex db update )
@@ -109,7 +109,7 @@ export const processMessage = inngest.createFunction(
         name: "title-generator",
         system: TITLE_GENERATOR_SYSTEM_PROMPT,
         model: anthropic({
-          model: "claude-opus-4-20250514",
+          model: "claude-haiku-4-5-20251001",
           defaultParameters: { temperature: 0, max_tokens: 50 },
         }),
       });
@@ -145,7 +145,7 @@ export const processMessage = inngest.createFunction(
       description: "An expert AI coding assistant",
       system: systemPrompt,
       model: anthropic({
-        model: "claude-opus-4-20250514",
+        model: "claude-haiku-4-5-20251001",
         defaultParameters: { temperature: 0.3, max_tokens: 16000 },
       }),
       tools: [
