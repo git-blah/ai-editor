@@ -28,10 +28,10 @@ export const fetcher = async (
     const validatedPayload = suggestionRequestSchema.parse(payload);
 
     const response = await ky
-      .post("/api/suggestion", {
+      .post("/api/suggestion", { 
         json: validatedPayload,
         signal,
-        timeout: 10_000,
+        timeout: 30_000,
         retry: 0,
       })
       .json<SuggestionResponse>();
