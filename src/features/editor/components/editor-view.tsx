@@ -7,6 +7,7 @@ import { FileBreadcrumbs } from "./file-breadcrumbs";
 import { TopNavigation } from "./top-navigation";
 import Image from "next/image";
 import { CodeEditor } from "./code-editor";
+import { AlertTriangleIcon } from "lucide-react";
 
 const DEBOUNCE_MS = 1500
 
@@ -48,7 +49,16 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
               updateFile({id : activeFile._id , content})
             },DEBOUNCE_MS)
           }} />)}
-          {isActiveFileBinary && (<p>TODO file binary</p>)}
+          {isActiveFileBinary && (
+            <div className="size-full flex items-center justify-center">
+              <div className="flex flex-col items-center gap-2.5 max-w-md text-center">
+                <AlertTriangleIcon className="size-10 text-yellow-500"/>
+                <p className="text-sm"> 
+                  The file is not displayed because its either binary or uses unsupported text encoding
+                </p>
+              </div>
+            </div>
+            )}
         </div>
       </div>
     </>

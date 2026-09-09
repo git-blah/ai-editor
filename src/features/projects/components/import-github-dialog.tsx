@@ -47,13 +47,14 @@ export const ImportGithubDialog = ({
         const { projectId } = await ky
           .post("/api/github/import", {
             json: { url: value.url },
+            timeout : 30_000
           })
           .json<{ 
             success: boolean; 
             projectId: Id<"projects">,
             eventId: string;
           }>()
-
+          
         toast.success("Importing repository...");
         onOpenChange(false);
         form.reset();
@@ -61,8 +62,8 @@ export const ImportGithubDialog = ({
         router.push(`/projects/${projectId}`);
       } catch (error) {
         if (error instanceof HTTPError) {
-          const body = await error.response.json<{ error: string }>();
-          if (body.error?.includes("Pro plan required")) {
+          const body = error.data as { error?: string } | undefined;
+          if (body?.error?.includes("Pro plan required")) {
             toast.error("Upgrade to import repositories", {
               action: {
                 label: "Upgrade",
@@ -73,7 +74,7 @@ export const ImportGithubDialog = ({
             return;
           }
 
-          if (body.error?.includes("GitHub not connected")) {
+          if (body?.error?.includes("GitHub not connected")) {
             toast.error("GitHub account not connected", {
               action: {
                 label: "Connect",
