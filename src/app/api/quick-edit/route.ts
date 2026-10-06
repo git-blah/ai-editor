@@ -39,9 +39,15 @@ If the instruction is unclear or cannot be applied, return the original code unc
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await auth();
+    const { userId , has} = await auth();
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
+    }
+
+    const hasPro = has({plan:"pro"})
+
+    if(!hasPro){
+      return  NextResponse.json({ suggestion: "Buy pro plan to use AI" });
     }
 
     const { selectedCode, fullCode, instruction } = await request.json();
@@ -89,7 +95,7 @@ export async function POST(request: Request) {
       .replace("{documentation}", documentationContext);
 
     const { output } = await generateText({
-      model: anthropic("claude-opus-4-0"),
+      model: anthropic(process.env.ANTHROPIC_MODEL!),
       output: Output.object({ schema: quickEditSchema }),
       prompt,
     });

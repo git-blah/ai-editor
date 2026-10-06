@@ -34,12 +34,17 @@ const SUGGESTION_PROMPT = `**Role**: You are an expert Code Completion Assistant
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await auth();
+    const { userId, has } = await auth();
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const hasPro = has({plan:"pro"})
+
+    if(!hasPro){
+      return NextResponse.json({ suggestion: "Buy pro plan to use AI" });
+    }
     const {
       fileName,
       code,
@@ -64,13 +69,11 @@ export async function POST(request: Request) {
       .replace("{nextLines}", nextLines || "")
       .replace("{lineNumber}", lineNumber.toString());
 
-    // const { output } = await generateText({
-    //   model: anthropic("claude-opus-4-0"),
-    //   output: Output.object({ schema: suggestionSchema }),
-    //   prompt,
-    // });
-
-    const { output } = { output: { suggestion: " it works " } };
+    const { output } = await generateText({
+      model: anthropic(process.env.ANTHROPIC_MODEL!),
+      output: Output.object({ schema: suggestionSchema }),
+      prompt,
+    });
 
     return NextResponse.json({ suggestion: output.suggestion });
   } catch (error) {

@@ -315,8 +315,6 @@ export const createFolder = mutation({
   },
 });
 
-// TODO : create folders tool for agent
-
 //used for agent renamefile tool
 export const renameFile = mutation({
   args: {

@@ -30,18 +30,29 @@ const createTooltipForSelection = (state: EditorState): readonly Tooltip[] => {
         addToChatButton.textContent = "Add to Chat";
         addToChatButton.className = "font-sans p-1 px-2 hover:bg-foreground/10 rounded-sm";
 
+        // addToChatButton.onclick = () => {
+        //   if (editorView) {
+        //     editorView.dispatch({
+        //       effects: ,
+        //     });
+        //   }
+        // };
+
+
+
+
         const quickEditButton = document.createElement("button");
         quickEditButton.className =
           " font-sans p-1 px-2 hover:bg-foreground/10 rounded-sm flex items-center gap-1";
 
         const quickEditButtonText = document.createElement("span");
-        quickEditButton.textContent = "Quick Edit";
+        quickEditButtonText.textContent = "Quick Edit"; 
+
 
         const quickEditButtonShortcut = document.createElement("span");
         quickEditButtonShortcut.textContent = "ctrl+K";
         quickEditButtonShortcut.className = "text-sm opacity-60";
 
-        //once check what is faster for dom manipulation, editing text or appending text childs.
         quickEditButton.appendChild(quickEditButtonText);
         quickEditButton.appendChild(quickEditButtonShortcut);
 
@@ -53,7 +64,7 @@ const createTooltipForSelection = (state: EditorState): readonly Tooltip[] => {
           }
         };
 
-        dom.appendChild(addToChatButton);
+        // dom.appendChild(addToChatButton);
         dom.appendChild(quickEditButton);
 
         return { dom };

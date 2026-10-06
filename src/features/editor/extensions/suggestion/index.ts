@@ -1,5 +1,3 @@
-// 49:00 video
-
 import {
   Decoration,
   DecorationSet,

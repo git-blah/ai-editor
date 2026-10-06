@@ -3,7 +3,7 @@
 Polaris is a browser-based IDE inspired by Cursor AI, featuring:
 
 - Real-time collaborative code editing
-- AI-powered code suggestions and quick edit (Cmd+K)
+- AI-powered code suggestions and quick edit (ctrl+K)
 - Conversation-based AI assistant
 - In-browser code execution with WebContainer
 - GitHub import/export integration
@@ -55,10 +55,9 @@ Implementation of polaris project video from codewithantonio youtube video.
    CONVEX_DEPLOYMENT=
    POLARIS_CONVEX_INTERNAL_KEY=  # Generate a random string
 
-   # AI Provider (choose one)
-   ANTHROPIC_API_KEY=        # Preferred - Claude Sonnet 4
-   GOOGLE_GENERATIVE_AI_API_KEY=  # Free alternative - Gemini 2.0 Flash
-
+   # AI Provider (choose one )
+   ANTHROPIC_API_KEY=        
+  
    # Firecrawl (optional)
    FIRECRAWL_API_KEY=
 
@@ -94,7 +93,7 @@ src/
 │   ├── api/               # API routes
 │   │   ├── messages/      # Conversation API
 │   │   ├── suggestion/    # AI suggestions
-│   │   └── quick-edit/    # Cmd+K editing
+│   │   └── quick-edit/    # ctrl+K editing
 │   └── projects/          # Project pages
 ├── components/            # Shared components
 │   ├── ui/               # shadcn/ui components
@@ -130,7 +129,7 @@ convex/
 ### AI Features
 
 - Real-time code suggestions with ghost text
-- Quick edit with Cmd+K (select code + natural language instruction)
+- Quick edit with ctrl+K (select code + natural language instruction)
 - Selection tooltip for quick actions
 - Conversation sidebar with message history
 
