@@ -14,10 +14,16 @@ const requestSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const { userId } = await auth();
+  const { userId, has } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const hasPro = has({ plan: "pro" });
+
+  if (!hasPro) {
+    return NextResponse.json({ error: "Pro plan required" }, { status: 403 });
   }
 
   const internalKey = process.env.POLARIS_CONVEX_INTERNAL_KEY!;
@@ -92,7 +98,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     success: true,
-    eventID: event.ids[0], // TODO : later use inngest event id
+    eventID: event.ids[0],
     messageId: assistantMessageId,
   });
 

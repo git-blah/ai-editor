@@ -52,7 +52,7 @@ export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
             className={cn("size-4 shrink-0 text-muted-foreground", isOpen && "rotate-90")}
           />
           <p className="text-xs uppercase line-clamp-1 ">{project?.name ?? "Loading..."}</p>
-          <div className="opacity-0 group-hover/project:opacity-100 transition-none duration-0 flex items-center gap-0.5 ml-auto">
+          <div className="opacity-30 group-hover/project:opacity-100 transition-none duration-0 flex items-center gap-0.5 ml-auto">
             <Button
               onClick={(e) => {
                 e.stopPropagation();

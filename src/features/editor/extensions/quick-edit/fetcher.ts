@@ -1,4 +1,4 @@
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -38,7 +38,12 @@ export const fetcher = async (
     if (error instanceof Error && error.name === "AbortError") {
       return null;
     }
-    toast.error("Failed to fetch AI quick edit");
+    const body = error instanceof HTTPError ? (error.data as { error?: string } | undefined) : undefined;
+    if (body?.error?.includes("Pro plan required")) {
+      toast.error("Upgrade to pro to use feature");
+    } else {
+      toast.error("Failed to fetch AI quick edit");
+    }
     return null;
   }
 };

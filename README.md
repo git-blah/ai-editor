@@ -1,15 +1,14 @@
-# Polaris - Build a Cursor AI Alternative
+# Polaris
 
-Polaris is a browser-based IDE inspired by Cursor AI, featuring:
+Polaris is a browser-based IDE, featuring:
 
-- Real-time collaborative code editing
-- AI-powered code suggestions and quick edit (ctrl+K)
+Note:- Implementation of polaris project video from codewithantonio youtube video.
+
+- AI-powered code suggestions and quick edit
 - Conversation-based AI assistant
 - In-browser code execution with WebContainer
 - GitHub import/export integration
 - Multi-file project management
-
-Implementation of polaris project video from codewithantonio youtube video.
 
 ## Tech Stack
 
@@ -56,8 +55,8 @@ Implementation of polaris project video from codewithantonio youtube video.
    POLARIS_CONVEX_INTERNAL_KEY=  # Generate a random string
 
    # AI Provider (choose one )
-   ANTHROPIC_API_KEY=        
-  
+   ANTHROPIC_API_KEY=
+
    # Firecrawl (optional)
    FIRECRAWL_API_KEY=
 

@@ -1,4 +1,4 @@
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import { toast } from "sonner";
 import { useState } from "react";
 import { CopyIcon, HistoryIcon, LoaderIcon, PlusIcon } from "lucide-react";
@@ -38,13 +38,16 @@ import {
 import { Id } from "../../../../convex/_generated/dataModel";
 import { DEFAULT_CONVERSATION_TITLE } from "../constants";
 import { PastConversationDialog } from "./past-conversation-dialogue";
+import { useClerk } from "@clerk/nextjs";
 
 interface ConversationSidebarProps {
   projectId: Id<"projects">;
 }
 
 export const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
+  const { openUserProfile } = useClerk();
   const [input, setInput] = useState("");
+  const [block, setBlock] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState<Id<"conversations"> | null>(
     null,
   );
@@ -111,8 +114,19 @@ export const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => 
           message: message.text,
         },
       });
-    } catch {
-      toast.error("Message failed to send");
+    } catch (error) {
+      const body = error instanceof HTTPError ? (error.data as { error?: string } | undefined) : undefined;
+      if (body?.error?.includes("Pro plan required")) {
+        toast.error("Upgrade to chat with AI", {
+          action: {
+            label: "Upgrade",
+            onClick: () => openUserProfile(),
+          },
+        });
+        setBlock(true);
+      } else {
+        toast.error("Message failed to send");
+      }
     }
 
     setInput("");
@@ -125,7 +139,14 @@ export const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => 
         onOpenChange={setPastConversationOpen}
         onSelect={setSelectedConversationId}
       />
-      <div className="flex flex-col h-full bg-sidebar">
+      <div className="relative flex flex-col h-full bg-sidebar">
+        {block && (
+          <div className="italic bg-white/0.5 flex items-center justify-center backdrop-blur-md absolute inset-0 z-50">
+            <p className="rounded-lg bg-background/90 px-6 py-4 text-center shadow-lg">
+              Please buy a pro plan
+            </p>
+          </div>
+        )}
         <div className="h-8.75 flex items-center justify-between border-b">
           <div className="text-sm truncate pl-3">
             {activeConversation?.title ?? DEFAULT_CONVERSATION_TITLE}

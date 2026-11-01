@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     const hasPro = has({plan:"pro"})
 
     if(!hasPro){
-      return NextResponse.json({ suggestion: "Buy pro plan to use AI" });
+      return NextResponse.json({ suggestion: "" });
     }
     const {
       fileName,

@@ -1,5 +1,3 @@
-//
-
 import { Tooltip, showTooltip, keymap, EditorView } from "@codemirror/view";
 
 import { EditorState, StateEffect, StateField } from "@codemirror/state";

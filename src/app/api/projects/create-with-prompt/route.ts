@@ -8,14 +8,14 @@ import { convex } from "@/lib/convex-client"
 
 import { api } from "../../../../../convex/_generated/api"
 
-import { DEFAULT_CONVERSATION_TITLE } from "@/features/conversations/constants" 
+import { DEFAULT_CONVERSATION_TITLE } from "@/features/conversations/constants"
 
 const requestSchema = z.object({
     prompt : z.string().min(1)
 })
 
 export async function POST(request: Request){
-    const {userId} = await auth()
+    const {userId, has } = await auth()
 
     if(!userId){
         return NextResponse.json({error : "Unauthorized"}, {status : 401})
@@ -30,6 +30,7 @@ export async function POST(request: Request){
         )
     }
 
+    const hasPro = has({plan:"pro"})
     const body = await request.json()
     const {prompt} = requestSchema.parse(body)
 
@@ -46,32 +47,34 @@ export async function POST(request: Request){
         ownerId:userId
     })
 
-    await convex.mutation(api.system.createMessage, {
-        internalKey,
-        conversationId,
-        projectId,
-        role:"user",
-        content: prompt
-    })
-
-    const assistantMessageId = await convex.mutation(api.system.createMessage,{
-        internalKey,
-        conversationId,
-        projectId,
-        role:"assistant",
-        content : "",
-        status : "processing"
-    })
-
-    await inngest.send({
-        name: "message/sent",
-        data : {
-            messageId : assistantMessageId,
+    if(hasPro){
+        await convex.mutation(api.system.createMessage, {
+            internalKey,
             conversationId,
             projectId,
-            message:prompt
-        }
-    })
+            role:"user",
+            content: prompt
+        })
 
-    return NextResponse.json({projectId})
+        const assistantMessageId = await convex.mutation(api.system.createMessage,{
+            internalKey,
+            conversationId,
+            projectId,
+            role:"assistant",
+            content : "",
+            status : "processing"
+        })
+
+        await inngest.send({
+            name: "message/sent",
+            data : {
+                messageId : assistantMessageId,
+                conversationId,
+                projectId,
+                message:prompt
+            }
+        })
+    }
+
+    return NextResponse.json({projectId, promptSkipped : !hasPro})
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ky from "ky";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -44,13 +44,17 @@ export const NewProjectDialog = ({
     setIsSubmitting(true);
 
     try {
-      const { projectId } = await ky
+      const { projectId, promptSkipped } = await ky
         .post("/api/projects/create-with-prompt", {
           json: { prompt: message.text.trim() },
         })
-        .json<{ projectId: Id<"projects"> }>();
+        .json<{ projectId: Id<"projects">; promptSkipped: boolean }>();
 
-      toast.success("Project created");
+      if (promptSkipped) {
+        toast.warning("Project created, but AI generation requires a pro plan");
+      } else {
+        toast.success("Project created");
+      }
       onOpenChange(false);
       setInput("");
       router.push(`/projects/${projectId}`);
